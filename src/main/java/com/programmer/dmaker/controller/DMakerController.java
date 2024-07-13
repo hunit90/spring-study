@@ -1,9 +1,13 @@
 package com.programmer.dmaker.controller;
 
+import com.programmer.dmaker.dto.CreateDeveloper;
 import com.programmer.dmaker.service.DMakerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Arrays;
@@ -22,11 +26,13 @@ public class DMakerController {
         return Arrays.asList("snow", "elsa", "Olaf");
     }
 
-    @GetMapping("/create-developers")
-    public List<String> createDevelopers() {
-        log.info("GET /create-developers HTTP/1.1");
+    @PostMapping("/create-developers")
+    public List<String> createDevelopers(
+            @Valid @RequestBody CreateDeveloper.Request request
+            ) {
+        log.info("request : {}", request);
 
-        dMakerService.createDeveloper();
+        dMakerService.createDeveloper(request);
 
         return List.of("Olaf");
     }
