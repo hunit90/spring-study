@@ -6,7 +6,6 @@ import com.programmer.dmaker.repository.DeveloperRepository;
 import com.programmer.dmaker.type.DeveloperLevel;
 import com.programmer.dmaker.type.DeveloperSkillType;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
