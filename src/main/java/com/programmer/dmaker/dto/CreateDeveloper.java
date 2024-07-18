@@ -1,5 +1,6 @@
 package com.programmer.dmaker.dto;
 
+import com.programmer.dmaker.entity.Developer;
 import com.programmer.dmaker.type.DeveloperLevel;
 import com.programmer.dmaker.type.DeveloperSkillType;
 import jakarta.validation.constraints.Max;
@@ -45,6 +46,15 @@ public class CreateDeveloper {
         private DeveloperSkillType developerSkillType;
         private Integer exprienceYears;
         private String memberId;
+
+        public static Response fromEntity(Developer developer) {
+            return Response.builder()
+                    .developerLevel(developer.getDeveloperLevel())
+                    .developerSkillType(developer.getDeveloperSkillType())
+                    .exprienceYears(developer.getExperienceYears())
+                    .memberId(developer.getMemberId())
+                    .build();
+        }
     }
 
 }
