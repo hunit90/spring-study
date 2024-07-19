@@ -35,7 +35,7 @@ public class Developer {
     private Integer age;
 
     @CreatedDate
-    private LocalDateTime createdAt;;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
