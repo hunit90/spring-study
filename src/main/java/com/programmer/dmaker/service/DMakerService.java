@@ -3,6 +3,7 @@ package com.programmer.dmaker.service;
 import com.programmer.dmaker.dto.CreateDeveloper;
 import com.programmer.dmaker.dto.DeveloperDetailDto;
 import com.programmer.dmaker.dto.DeveloperDto;
+import com.programmer.dmaker.dto.EditDeveloper;
 import com.programmer.dmaker.entity.Developer;
 import com.programmer.dmaker.exception.DMakerErrorCode;
 import com.programmer.dmaker.exception.DMakerException;
@@ -42,8 +43,15 @@ public class DMakerService {
     }
 
     private void validateCreateDeveloperRequest(CreateDeveloper.Request request) {
-        DeveloperLevel developerLevel = request.getDeveloperLevel();
-        Integer exprienceYears = request.getExprienceYears();
+        validateDeveloperLevel(request.getDeveloperLevel(), request.getExprienceYears());
+
+        Optional<Developer> developer = developerRepository.findByMemberId(request.getMemberId());
+        if (developer.isPresent()) {
+            throw new DMakerException(DUPLICATED_MEMBER_ID);
+        }
+    }
+
+    private static void validateDeveloperLevel(DeveloperLevel developerLevel, Integer exprienceYears) {
         if (developerLevel == DeveloperLevel.SENIOR
          && exprienceYears < 10) {
             throw new DMakerException(LEVEL_EXPERIENCE_YEARS_NOT_MATCHED);
@@ -57,11 +65,6 @@ public class DMakerService {
         if (developerLevel == DeveloperLevel.JUNIOR && exprienceYears > 4) {
             throw new DMakerException(LEVEL_EXPERIENCE_YEARS_NOT_MATCHED);
         }
-
-        Optional<Developer> developer = developerRepository.findByMemberId(request.getMemberId());
-        if (developer.isPresent()) {
-            throw new DMakerException(DUPLICATED_MEMBER_ID);
-        }
     }
 
     public List<DeveloperDto> getAllDevelopers() {
@@ -74,5 +77,24 @@ public class DMakerService {
         return developerRepository.findByMemberId(memberId)
                 .map(DeveloperDetailDto::fromEntity)
                 .orElseThrow(() -> new DMakerException(NO_DEVELOPER));
+    }
+
+    @Transactional
+    public DeveloperDetailDto editDeveloper(String memberId, EditDeveloper.Request request) {
+        validateEditDeveloperRequest(request, memberId);
+
+        Developer developer = developerRepository.findByMemberId(memberId).orElseThrow(() -> new DMakerException(NO_DEVELOPER));
+
+        developer.setDeveloperLevel(request.getDeveloperLevel());
+        developer.setDeveloperSkillType(request.getDeveloperSkillType());
+        developer.setExperienceYears(request.getExprienceYears());
+
+        return DeveloperDetailDto.fromEntity(developer);
+    }
+
+    private void validateEditDeveloperRequest(EditDeveloper.Request request, String memberId) {
+        validateDeveloperLevel(request.getDeveloperLevel(), request.getExprienceYears());
+
+        developerRepository.findByMemberId(memberId).orElseThrow(() -> new DMakerException(NO_DEVELOPER));
     }
 }

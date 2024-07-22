@@ -3,6 +3,7 @@ package com.programmer.dmaker.controller;
 import com.programmer.dmaker.dto.CreateDeveloper;
 import com.programmer.dmaker.dto.DeveloperDetailDto;
 import com.programmer.dmaker.dto.DeveloperDto;
+import com.programmer.dmaker.dto.EditDeveloper;
 import com.programmer.dmaker.service.DMakerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,11 +38,21 @@ public class DMakerController {
     @PostMapping("/create-developers")
     public CreateDeveloper.Response createDevelopers(
             @Valid @RequestBody CreateDeveloper.Request request
-            ) {
+    ) {
         log.info("request : {}", request);
-
-        dMakerService.createDeveloper(request);
 
         return dMakerService.createDeveloper(request);
     }
+
+
+    @PutMapping("/developers/{memberId}")
+    public DeveloperDetailDto editDeveloper(
+            @PathVariable String memberId,
+            @Valid @RequestBody EditDeveloper.Request request
+    ) {
+        log.info("GET /developers HTTP/1.1");
+
+        return dMakerService.editDeveloper(memberId, request);
+    }
+
 }
