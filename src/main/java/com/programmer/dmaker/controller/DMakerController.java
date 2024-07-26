@@ -1,10 +1,9 @@
 package com.programmer.dmaker.controller;
 
-import com.programmer.dmaker.dto.CreateDeveloper;
-import com.programmer.dmaker.dto.DeveloperDetailDto;
-import com.programmer.dmaker.dto.DeveloperDto;
-import com.programmer.dmaker.dto.EditDeveloper;
+import com.programmer.dmaker.dto.*;
+import com.programmer.dmaker.exception.DMakerException;
 import com.programmer.dmaker.service.DMakerService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,4 +60,14 @@ public class DMakerController {
         return dMakerService.deleteDeveloper(memberId);
     }
 
+    @ExceptionHandler(DMakerException.class)
+    public DMakerErrorReponse handleException (DMakerException e, HttpServletRequest request) {
+        log.error("errorCode: {}, url: {}, message: {}",
+                e.getDMakerErrorCode(), request.getRequestURI(), e.getDetailMessage());
+
+        return DMakerErrorReponse.builder()
+                .errorCode(e.getDMakerErrorCode())
+                .errorMessage(e.getDetailMessage())
+                .build();
+    }
 }

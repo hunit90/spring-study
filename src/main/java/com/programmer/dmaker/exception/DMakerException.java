@@ -1,5 +1,12 @@
 package com.programmer.dmaker.exception;
 
+import lombok.*;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class DMakerException extends RuntimeException {
     private DMakerErrorCode dMakerErrorCode;
     private String detailMessage;
@@ -8,12 +15,6 @@ public class DMakerException extends RuntimeException {
         super(errorCode.getMessage());
         this.dMakerErrorCode = errorCode;
         this.detailMessage = errorCode.getMessage();
-    }
-
-    public DMakerException(DMakerErrorCode errorCode, String detailMessage) {
-        super(detailMessage);
-        this.dMakerErrorCode = errorCode;
-        this.detailMessage = detailMessage;
     }
 
 }
