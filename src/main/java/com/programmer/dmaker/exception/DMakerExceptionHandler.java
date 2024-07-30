@@ -3,13 +3,10 @@ package com.programmer.dmaker.exception;
 import com.programmer.dmaker.dto.DMakerErrorReponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static com.programmer.dmaker.exception.DMakerErrorCode.INTERNAL_SERVER_ERROR;
-import static com.programmer.dmaker.exception.DMakerErrorCode.INVALID_REQUEST;
 
 @Slf4j
 @RestControllerAdvice
